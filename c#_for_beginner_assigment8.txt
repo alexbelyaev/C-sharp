@@ -1,0 +1,226 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication1
+{
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+           
+            // Instantiate a Course object called Programming with C#.
+            Course MyCourse = new Course("Programming with C#", 60, "Gerry O'Brien");
+
+            // Add your three students to this Course object.
+            MyCourse.Students.Add(new Students("Ali", "Baba", "01.01.1992"));
+            MyCourse.Students.Add(new Students("Crazy", "Frog", "01.02.1992"));
+            MyCourse.Students.Add(new Students("Jonny", "Dep", "01.03.1992"));
+            
+            //Add 5 grades to the the Stack in the each Student object
+
+            for (int i = 1; i < 6; i++)
+            {
+                foreach (Students stu in MyCourse.Students)
+                {
+                    stu.Grades.Push(i);
+                }
+            }
+
+            //using a foreach loop, iterate over the students in the arraylist and output their first 
+            //and last names to the console window. (for this exercise you must cast the returned object 
+            //from the arraylist to a student object.  also, place each student name on its own line)
+            
+            //Create a method inside the Course object called ListStudents() that contains the foreach loop.
+            //Call the ListStudents() method from Main().
+
+            MyCourse.ListStudents();
+            
+            Console.WriteLine();
+
+            //Instantiate at least one Teacher object.
+            Teacher MyTeacher = new Teacher("Gerry","O'Brien","Information Technology");
+            
+            //Add that Teacher object to your Course object
+            MyCourse.Teacher[0] = MyTeacher;
+
+            //Instantiate a Degree object, such as Bachelor.
+            Degree MyDegree = new Degree("Bachelor of Science");
+
+            //Add your Course object to the Degree object.
+            MyDegree.Course = MyCourse;
+
+            //Instantiate a UProgram object called Information Technology.
+            UProgram MyProgram = new UProgram("Information Technology", "Programming department", "Gerry O'Brien");
+
+            //Add the Degree object to the UProgram object.
+            MyProgram.ProgramDegree = MyDegree;
+
+            //Using Console.WriteLine statements, output the following information to the console window:
+            // The name of the program and the degree it contains
+            Console.WriteLine("The {0} program contain the {1} degree", MyProgram.Name, MyProgram.ProgramDegree.Name);
+            
+            // The name of the course in the degree
+            Console.WriteLine("The {0} degree contains the course {1}",MyDegree.Name, MyDegree.Course.Name);
+            
+            // The count of the number of students in the course.
+            Console.WriteLine("The {0} course contains {1} students", MyCourse.Name, MyCourse.Students.Count);
+                   
+            Console.ReadLine();
+        }
+    }
+  
+    class Person
+    {
+        public string FirstName {get; set;}
+        public string LastName {get; set;}
+        public Person(string first,string last)
+        {
+            this.FirstName = first;
+            this.LastName = last;
+        }
+    }
+	
+	    class Students : Person
+    {
+        private string _birthDay;
+        public string BirthDay
+        {
+            get { return _birthDay; }
+            set { _birthDay = value; }
+        }
+        
+        //readonly students counter
+        private static int _totalStudentsCount = 0;
+        public static int TotalStudentsCount
+        {
+            get { return _totalStudentsCount; }
+        }
+
+        
+        public Students(string first, string last, string birth) : base(first, last)
+        {
+            this.BirthDay = birth;
+            _totalStudentsCount++;
+        }
+
+        public void TakeTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Stack<int> Grades = new Stack<int>();
+    }
+	
+	    class Teacher : Person
+    {
+        private string _faculty;
+        public string Faculty
+        {
+            get { return _faculty; }
+            set { _faculty = value; }
+        }
+        public Teacher(string first, string last, string faculty) : base(first, last)
+        {
+            this.Faculty = faculty;
+        }
+        public void GradeTest()
+        {
+            throw new NotImplementedException();
+        }
+    }
+	
+	    class Course
+    {
+        //Students List<T>
+        public List<Students> Students = new List<Students>();
+       
+        //Teachers array
+        private Teacher[] _teacher = new Teacher[3];
+        public Teacher[] Teacher
+        {
+            get { return _teacher; }
+            set { _teacher = value; }
+        }
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+        private int _duration;
+        public int Duration
+        {
+            get { return _duration; }
+            set { _duration = value; }
+        }
+        private string _professorName;
+        public string ProfessorName
+        {
+            get { return _professorName; }
+            set { _professorName = value; }
+        }
+        public Course(string name, int duration, string professorName)
+        {
+            this.Name = name;
+            this.Duration = duration;
+            this.ProfessorName = professorName;
+        }
+        public void ListStudents()
+        {
+            Console.WriteLine("Students");
+            Console.WriteLine("First name, Last name:");
+            Console.WriteLine();
+            foreach (Students stud in Students)
+            {
+                Console.WriteLine("{0}  {1}", stud.FirstName, stud.LastName);
+            }
+        }
+    }
+	
+	    class Degree
+    {
+        public Course Course { get; set; }  //var to hold Course
+
+        public string Name { get; set; }
+
+        public Degree(string name)
+        {
+            this.Name = name;
+        }
+    }
+	
+	    class UProgram
+    {
+        //Var to hold degree
+        public Degree ProgramDegree { get; set; }
+        
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+        private string _department;
+        public string Department
+        {
+            get { return _department; }
+            set { _department = value; }
+        }
+        private string _head;
+        public string Head
+        {
+            get { return _head; }
+            set { _head = value; }
+        }
+        public UProgram(string name, string department, string head)
+        {
+            this.Name = name;
+            this.Department = department;
+            this.Head = head;
+        }
+    }
+ 
+}
